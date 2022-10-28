@@ -56,7 +56,9 @@ def create_table(obj, exp):
     dt = pd.DataFrame(table, columns= keys+exp)
     #print(dt)
     #print()
+    df_id = dt[dt.iloc[:, len(keys):].product(axis=1) == 1].index
+    index = [x for x in df_id]
     color = list(dt.index[dt.iloc[:, len(keys):].product(axis=1) == 1])
     #print(dt.to_dict())
-    return [table, keys+exp, color]
+    return [table, keys+exp, index]
 

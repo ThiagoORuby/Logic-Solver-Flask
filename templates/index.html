@@ -59,19 +59,26 @@
                         <tbody>
                             {% for i in range(table_info|length) %}
                                 {% if color %}
-                                    {% if i == color[0] %}
+                                    {% if i in color %}
                                     <tr class="table-success">
                                         {% for j in table_info[i] %}
                                         <td class="text-center">{{j}}</td>
                                         {% endfor %}
                                     </tr>
+                                    {% else %}
+                                        <tr>
+                                            {% for j in table_info[i] %}
+                                            <td class="'text-center">{{j}}</td>
+                                            {% endfor %}
+                                        </tr>
                                     {% endif %}
+                                {% else %}
+                                    <tr>
+                                        {% for j in table_info[i] %}
+                                        <td class="'text-center">{{j}}</td>
+                                        {% endfor %}
+                                    </tr>
                                 {% endif %}
-                                <tr>
-                                    {% for j in table_info[i] %}
-                                    <td class="'text-center">{{j}}</td>
-                                    {% endfor %}
-                                </tr>
                             {% endfor %}
                         </tbody>
                     </table>
