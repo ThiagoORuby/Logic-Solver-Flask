@@ -48,7 +48,7 @@ def create_app():
                 print(obj)
                 info, finded = get_answer(kb, obj)
                 columns = ['Proposition', 'Origin']
-            elif tipo == 'thruth_table':
+            elif tipo == 'truth_table':
                 try:
                     info, columns, color = create_table(obj, kb)
                     if color:
