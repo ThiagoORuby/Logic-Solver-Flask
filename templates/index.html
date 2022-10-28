@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block home %}
+    <div class="row">
+        <div class = "col">
+            <form method="post" name="logic_form">
+                <div class="mb-3">
+                    <label for="kb" class="form-label">Knowledge Base:</label>
+                    <textarea class="form-control" id="kb" name="kb" rows="3" spellcheck="false" onBlur="setId(this.id)" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="obj" class="form-label">Ask Something:</label>
+                    <input type="text" class="form-control" id="obj" name="obj" onBlur="setId(this.id)" spellcheck="false" required>
+                </div>
+                <div class="text-center mb-4">
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        {% for i in buttons %}
+                            <button type="button" onclick="addtext('{{i}}')" class="btn btn-outline-secondary">{{i}}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="dropdown">
+                            <select class="form-select" name="method">
+                                {% for i in ["logic_inference", "thruth_table"] %}
+                                    <option value = {{i}}>{{i}}</option>
+                                {% endfor %}
+                                <option value = "logic_consequence" disabled>logic_consequence</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="buttons btn-group me-2" role="group">
+                            <button type="button" id = "example" class="btn btn-primary">Get example</button>
+                            <button type="submit" class="btn btn-dark">Solve it</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class = "col", id="coltable">
+            <div class="text-center mb-4"><h4>Problem Solution</h4></div>
+                {% if table_info != False %}
+                <div id="scrolltable" >
+                    {% if finded %}
+                        <p class = "mb-2 text-center">The value <b>{{obj}}</b> can be derived from the past knowledge base</p>
+                    {% else %}
+                        <p class = "mb-2 text-center">It wasn't possible to find a solution. Here are the steps:</p>
+                    {% endif %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Proposition</th>
+                            <th scope="col">Origin</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in table_info %}
+                                <tr>
+                                    <td>{{i[0]}}</td>
+                                    <td>{{i[1]}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                    {% if finded != -1 %}
+                        <p class="text-center justify-content-center">Nothing here...</p>
+                    {% else %}
+                        <p class="text-center justify-content-center">Has some error in the input fields</p>
+                    {% endif %}
+                {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block about %}
+    <h2 class="mb-2">About the app:</h2>
+    <p>Flask web application that solves logic problems with different methods.</p>
+    <p><b>Created by:</b> Thiago Ribeiro</p>
+    <p><b>Email:</b> trs57595@gmail.com</p>
+{% endblock %}

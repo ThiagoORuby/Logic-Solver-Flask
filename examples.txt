@@ -1,0 +1,91 @@
+a → ¬b
+c ∨ d
+c → b
+a
+\s
+d
+\e
+(c ∧ m) → b
+f
+t
+t → c
+i → c
+(c ∧ f) → g
+\s
+g
+\e
+j → (l ∧ ¬c)
+c
+\s
+¬j
+\e
+¬r → ¬l
+l
+\s
+r
+\e
+j ∨ b
+c ∨ ¬j
+¬b ∨ d
+¬d
+\s
+c ∧ j
+\e
+g → ¬d
+¬d → ¬i
+i
+\s
+¬g
+\e
+¬a → s
+a → ¬p
+p
+\s
+s
+\e
+n → (¬j ∧ ¬r)
+¬r → l
+l → s
+¬s
+\s
+¬n ∧ ¬l
+\e
+t → s
+u → ¬s
+¬w
+u ∨ w
+\s
+¬t
+\e
+p
+q ∨ r
+s → t
+q → u
+¬s → ¬r
+r → v
+¬t
+\s
+u
+\e
+p → q
+r ∨ s
+¬s → ¬t
+¬q ∨ s
+¬s
+¬p ∧ r → u
+w ∨ t
+\s
+u ∧ w
+\e
+(a ∧ b ∧ c) → d
+(d ∧ f) → G
+e → f
+f → b
+b → c
+g → h
+i → j
+(a ∧ f) → h
+a
+f
+\s
+h
