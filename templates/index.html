@@ -48,18 +48,29 @@
                     {% else %}
                         <p class = "mb-2 text-center">It wasn't possible to find a solution. Here are the steps:</p>
                     {% endif %}
-                    <table class="table">
+                    <table class="table table-hover text-center">
                         <thead>
                         <tr>
-                            <th scope="col">Proposition</th>
-                            <th scope="col">Origin</th>
+                            {% for i in columns %}
+                                <th scope="col">{{i}}</th>
+                            {% endfor %}
                         </tr>
                         </thead>
                         <tbody>
-                            {% for i in table_info %}
+                            {% for i in range(table_info|length) %}
+                                {% if color %}
+                                    {% if i == color[0] %}
+                                    <tr class="table-success">
+                                        {% for j in table_info[i] %}
+                                        <td class="text-center">{{j}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                {% endif %}
                                 <tr>
-                                    <td>{{i[0]}}</td>
-                                    <td>{{i[1]}}</td>
+                                    {% for j in table_info[i] %}
+                                    <td class="'text-center">{{j}}</td>
+                                    {% endfor %}
                                 </tr>
                             {% endfor %}
                         </tbody>

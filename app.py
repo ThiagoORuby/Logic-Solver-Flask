@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, jsonify, flash
 from brain2 import Brain
+from truth_table import create_table
 import pandas as pd
 from random import randint
 
@@ -23,10 +24,6 @@ def create_app():
         except:
             return [False, -1]
         print(brain.print_list)
-        #data = pd.DataFrame()
-        #data = pd.DataFrame(brain.print_list, columns=['Proposition', 'Origin'])
-        #print(data.head())
-        #data.to_html(header=True, classes='table')
         if ret:
             return [brain.print_list, True]
         else:
@@ -37,6 +34,8 @@ def create_app():
         info = False
         obj = None
         finded = False
+        columns = []
+        color = False
         buttons = [x for x in "→¬∧∨()"]
         if request.method == 'POST':
             kb = request.form['kb']
@@ -44,14 +43,22 @@ def create_app():
             print("kb: ", kb)
             obj = request.form['obj']
             tipo = request.form['method']
-            print("tipo" , tipo)
-            print(obj)
-            info, finded = get_answer(kb, obj)
-            #print(info)
-
-            #return render_template('index.html', buttons=buttons, table_info = info)
-        #print(brain.print_list)
-        return render_template('index.html', buttons=buttons, table_info = info, obj=obj, finded=finded)
+            if tipo == 'logic_inference':
+                print("tipo" , tipo)
+                print(obj)
+                info, finded = get_answer(kb, obj)
+                columns = ['Proposition', 'Origin']
+            elif tipo == 'thruth_table':
+                try:
+                    info, columns, color = create_table(obj, kb)
+                    if color:
+                        finded = True
+                    else:
+                        finded = False
+                except:
+                    finded = -1
+        print("columns: ", columns)
+        return render_template('index.html', buttons=buttons, table_info = info, obj=obj, columns=columns, finded=finded, color = color)
 
     @app.route('/about')
     def about():
