@@ -89,3 +89,26 @@ a
 f
 \s
 h
+\e
+P → (Q ∧ R)
+(Q ∧ R) → S
+S → (T ∨ ( ¬T → U))
+P
+¬T
+\s
+U
+\e
+p
+q → (r ∧ s)
+t → ¬¬q
+t ∨ ¬p
+\s
+r ∧ s
+\e
+¬p → (r ∧ ¬s)
+t → s
+u → ¬p
+¬w
+u ∨ w
+\s
+¬t ∨ w

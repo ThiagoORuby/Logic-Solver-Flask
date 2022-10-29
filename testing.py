@@ -59,6 +59,26 @@ u → ¬s
 u ∨ w
 ¬t
 
+P → (Q ∧ R)
+(Q ∧ R) → S
+S → (T ∨ ( ¬T → U))
+P
+¬T
+U
+
+p
+q → (r ∧ s)
+t → ¬¬q
+t ∨ ¬p
+r ∧ s
+
+¬p → (r ∧ ¬s)
+t → s
+u → ¬p
+¬w
+u ∨ w
+¬t ∨ w
+
 7
 p
 q ∨ r

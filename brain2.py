@@ -6,7 +6,7 @@
 # se valor == resultado, fim do algoritmo 
 
 import re
-from logic_rules import modus_ponens, modus_tollens, syllogism, hypotetic_syllogism, resolution, conjuction
+from logic_rules import modus_ponens, modus_tollens, syllogism, hypotetic_syllogism, resolution, conjuction, addition
 import collections
 # Fazer esse loop ate nao ter mais elementos em dict_exp
 # caso nao tenha achado a resposta, então:
@@ -94,11 +94,17 @@ class Brain:
         if not self.achou:
             return self._find_conjuctions(obj)
         return self.achou
+    
+    def _compare_results(self, exp1, exp2):
+        exp1 = exp1.replace('(', '').replace(')', '')
+        exp2 = exp2.replace("(", '').replace(")", '')
+        if exp1 == exp2: return True
+        return False
 
     def bfs(self, exp, obj, i):
         # Dict to find next
         print(f'exp atual: {exp} e obj: {obj}')
-        if(exp == obj) or self._find_conjuctions(obj):
+        if(self._compare_results(exp, obj)) or self._find_conjuctions(obj) or self._find_additions(obj):
             print("Achei!")
             self.exp_dict = None
             self.achou = True
@@ -177,7 +183,7 @@ class Brain:
     
     def _find_conjuctions(self, obj):
         if '∧' in obj:
-            splited = obj.replace(' ', '').split('∧')
+            splited = obj.replace(' ', '').replace('(', '').replace(')', '').split('∧')
             for i in splited:
                 if i not in self.exp_dict.keys(): return False
             self.cache_list.append(obj)
@@ -185,6 +191,15 @@ class Brain:
             return True
         return False
     
-    def _find_additions(self):
-        pass
+    def _find_additions(self, obj):
+        qnt = 0
+        if '∨' in obj:
+            splited = obj.replace(' ', '').replace('(', '').replace(')', '').split('∨')
+            for i in splited:
+                if i in self.exp_dict.keys(): qnt+=1
+            if qnt == 0: return False
+            else:
+                self.cache_list.append(obj)
+                self.print_list.append([obj, 'Addition'])
+                return True
 

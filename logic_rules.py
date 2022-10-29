@@ -26,6 +26,9 @@ def modus_ponens(exp1, exp2):
         return [False, None]
     if len(exp1) < 3 or not('→' in exp1):
         exp1, exp2 = exp2, exp1
+    # Remove parentesis in the begin and end of exp1
+    if exp1[0] == '(' and exp1[-1] == ')':
+        exp1 = exp1[1:len(exp1)-1]
     pos_s = find_break(exp1, '→')
     #exp1 = exp1.replace('(', '').replace(')', '')
     splited = [exp1[:pos_s], exp1[pos_s+1:]]
@@ -44,6 +47,9 @@ def modus_tollens(exp1, exp2):
         return [False, None]
     if len(exp1) < 3 or not('→' in exp1):
         exp1, exp2 = exp2, exp1
+    # Remove parentesis in the begin and end of exp1
+    if exp1[0] == '(' and exp1[-1] == ')':
+        exp1 = exp1[1:len(exp1)-1]
     pos_s = find_break(exp1, '→')
     #exp1 = exp1.replace('(', '').replace(')', '')
     splited = [exp1[:pos_s], exp1[pos_s+1:]]
@@ -51,7 +57,7 @@ def modus_tollens(exp1, exp2):
     if '¬' in exp2 or '¬' in splited[1]:
         exp2 = exp2.replace('(', '').replace(')', '')
         splited[1] = splited[1].replace('(', '').replace(')', '')
-        if exp2 == splited[1].replace('¬', '', 1) or (exp2 in splited[1] and '∧' in splited[1]):
+        if exp2 == splited[1].replace('¬', '', 1) or ('¬'+exp2 in splited[1] and '∧' in splited[1]) or ('¬'+splited[1] in exp2 and '∧' in exp2):
             return ['¬'+splited[0], None]
         if exp2 == splited[1].replace('¬', '', 1) or exp2.replace('¬', '', 1) == splited[1]:
             return ['¬'+splited[0], None]
@@ -62,8 +68,11 @@ def syllogism(exp1, exp2):
         return [False, None]
     if len(exp1) < 3 or not('∨' in exp1):
         exp1, exp2 = exp2, exp1
+    # Remove parentesis in the begin and end of exp1
+    if exp1[0] == '(' and exp1[-1] == ')':
+        exp1 = exp1[1:len(exp1)-1]
     pos_s = find_break(exp1, '∨')
-    exp1 = exp1.replace('(', '').replace(')', '')
+    #exp1 = exp1.replace('(', '').replace(')', '')
     splited = [exp1[:pos_s], exp1[pos_s+1:]]
     if '¬' in exp2 or '¬' in splited[1] or '¬' in splited[0]:
         if exp2 == splited[1].replace('¬', '', 1) or exp2.replace('¬', '', 1) == splited[1]:
