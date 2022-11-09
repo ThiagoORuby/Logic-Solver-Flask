@@ -1,7 +1,11 @@
+# THE TRUTH TABLE SOLVER
+
 import itertools
 import pandas as pd
 # Truth table solve method
 # → ¬ ∧ ∨
+
+# Replace logic operators to python operators
 def replace_exp(exp):
     exp = exp.replace("→", "<=")
     exp = exp.replace("¬", "0**")
@@ -9,12 +13,14 @@ def replace_exp(exp):
     exp = exp.replace("∨", "or")
     return exp
 
+# Get list of expressions (KB)
 def get_list(exp):
     new_exp = []
     for ex in exp:
         new_exp.append(replace_exp(ex))
     return new_exp
 
+# Get atoms of KB
 def get_atoms(exp):
     atoms = set()
     dict_atoms = {}
@@ -27,6 +33,7 @@ def get_atoms(exp):
         dict_atoms[i] = [0,1]
     return dict_atoms
 
+# Create the table
 def create_table(obj, exp):
     table = []
     row = []

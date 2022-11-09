@@ -113,7 +113,7 @@ f
 h
 e → b
 """
-from brain2 import Brain
+from brain import Brain
 from truth_table import create_table, get_atoms
 
 # Teste de entrada inicial

@@ -1,14 +1,13 @@
 # Logic inference functions
 
-def revert_exp(exp):
-    has_p = False
-    has_not = False
-    if('(' in exp):
-        if('¬' in exp):
-            exp = exp.replace('(', '').replace(')', '').replace('¬', '')
-    return 0
+# idea: function to revert an expression correctly
+#def revert_exp(exp):
+#    if('(' in exp):
+#        if('¬' in exp):
+#            exp = exp.replace('(', '').replace(')', '').replace('¬', '')
+#    return 0
     
-
+# find the logic operator
 def find_break(exp, value):
     pos = False
     open_p = 0
@@ -21,6 +20,7 @@ def find_break(exp, value):
             return pos
     return pos
 
+# Modus Ponens
 def modus_ponens(exp1, exp2):
     if not('→' in exp1) and not('→' in exp2):
         return [False, None]
@@ -63,6 +63,7 @@ def modus_tollens(exp1, exp2):
             return ['¬'+splited[0], None]
     return [False, None]
 
+# Disjunctive Syllogism
 def syllogism(exp1, exp2):
     if not('∨' in exp1) and not('∨' in exp2):
         return [False, None]
@@ -118,14 +119,15 @@ def resolution(exp1, exp2):
             return [splited2[1]+'∨'+splited1[1]]
     return [False, None]
     
-
+# Addition
 def addition(exp1, exp2):
     return [exp1 + '∨' + exp2, None]
 
+# Conjunction
 def conjuction(exp1, exp2):
     return [exp2 + '∧' + exp1, None]
 
-
+# TESTS
 #print(find_break("(a∨b→c)→(d→e)", "→"))
 #print("(a∨b→c)→(d→e)")
 #print(modus_ponens('(a∨b→c)→¬(d→e)', '(a∨b→c)'))

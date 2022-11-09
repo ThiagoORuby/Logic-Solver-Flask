@@ -1,20 +1,7 @@
-# Duas listas: expressões iniciais e stack de operações
-# pegar a menor expressão
-# Adicionar o score de cada expressão com base na menor
-# operação entre a menor e a com maior score
-# add novo valor nas duas listas e volta ao passo 3 com esse novo valor
-# se valor == resultado, fim do algoritmo 
+# THE LOGIC INFERENCE BRAIN
 
-import re
-from logic_rules import modus_ponens, modus_tollens, syllogism, hypotetic_syllogism, resolution, conjuction, addition
-import collections
-# Fazer esse loop ate nao ter mais elementos em dict_exp
-# caso nao tenha achado a resposta, então:
-# fazer as operações de conjunção entre os elementos na memoria
-# caso nao encontre a resposta, retorne falso
+from logic_rules import modus_ponens, modus_tollens, syllogism, hypotetic_syllogism, resolution, conjuction
 
-# VER ALGORITMO A* PARA TENTAR MELHORAR ESSA HEURISTICA
-# DEPENDE DO OBJETIVO E DO PROXIMO PASSO (SOMA)
 
 class Brain:
 
@@ -33,7 +20,6 @@ class Brain:
                 # pegando os atomos 
                 if i not in '→¬∧∨()':
                     self.atoms.add(i)
-            # Pegando o dicionario com os scores universais
             score = 0
             #atoms_list = sorted(self.atoms)
             self.exp_dict[exp] = score
@@ -53,6 +39,7 @@ class Brain:
         for i in exp:
             self.exp_dict[i] = score
 
+    # try find some exp in exp_dict
     def _try_find(self, exp):
         if not self.exp_dict:
             return False
@@ -60,21 +47,27 @@ class Brain:
             return True
         return False
 
+    # clear the score of exp_dict
     def _clear_score(self):
         self.exp_dict = {x : 0 for x in self.exp_dict.keys()}
 
+    # get the new scores of exp_dict
     def get_scores(self, key, obj):
         if(self.exp_dict == None): return True
         score = dict()
+        # for each expression in exp_dict
         for x in self.exp_dict.keys():
-            # para cada char no valor
+            # create a new dict without the current key
             if(x != key): score[x] = 0
+            # for each char in each expression
             for j in x:
-                # se o atomo está la ou o objetivo esta la, add +1
+                # if this char has in the key, add +1 to score
                 if (j in self._get_atoms(key)) and x != key: score[x] += 1
+            # if the objective is in the expression, add +1 to score
             if obj in x and x != key: score[x] += 1
         return score
     
+    # Restart all the atributes
     def _clear_all(self):
         self.print_list.clear()
         self.atoms = set()
@@ -82,6 +75,7 @@ class Brain:
         self.achou = False
         self.exp_dict.clear()
 
+    # Do a new ask to the Knowledge base 
     def new_ask(self, obj):
         self.exp_dict = dict(sorted(list(self.exp_dict.items()), key=lambda l: len(l[0])))
         print(self.exp_dict)
@@ -95,15 +89,19 @@ class Brain:
             return self._find_conjuctions(obj)
         return self.achou
     
+    # Compare two expressions without parentesis
     def _compare_results(self, exp1, exp2):
         exp1 = exp1.replace('(', '').replace(')', '')
         exp2 = exp2.replace("(", '').replace(")", '')
         if exp1 == exp2: return True
         return False
 
+    # doing the heuristic BFS
     def bfs(self, exp, obj, i):
         # Dict to find next
         print(f'exp atual: {exp} e obj: {obj}')
+
+        # Stop conditions
         if(self._compare_results(exp, obj)) or self._find_conjuctions(obj) or self._find_additions(obj):
             print("Achei!")
             self.exp_dict = None
@@ -128,12 +126,12 @@ class Brain:
                 print("next: ", txt)
                 ret, name = self._apply_rules(txt, exp)
                 print("ret: ", ret[0])
-                # quando falta algum valor pra funfar
+                # If need some value to apply rule
                 if ret[0] == -1:
-                    # Para modus ponens
+                    # For modus ponens
                     if name == "Modus Ponens":
                         finded = self._try_find(ret[1])
-                        # Se encontrou:
+                        # if find:
                         if finded:
                             print("Complementar encontrado!")
                             ret[0] = conjuction(ret[1], min(exp, txt, key=len))[0]
@@ -143,7 +141,7 @@ class Brain:
                 if ret[0] == 0:
                     if not self.achou:
                         if self.print_list:
-                            # Outra solução: No final, retirar as premissas repetidas
+                            # Another solution: At the end, remove the repeated premises
                             #self.print_list.pop()
                             #if self.print_list: self.print_list.pop()
                             print()
@@ -160,13 +158,14 @@ class Brain:
                 self._add_to_dict([ret[0]])
                 self.bfs(ret[0], obj, i+1)
     
+    # Check if has in the printed_list to avoid repetitions
     def _check_printed(self, exp):
         inside = [i[0] for i in self.print_list]
         if exp in inside:
             return True
         return False
 
-    # modus ponens retorna falso e o valor que falta pra funcionar, se existir
+    # Apply Inference rules
     def _apply_rules(self, exp1, exp2):
         if(modus_ponens(exp1, exp2)[0]): 
             return [modus_ponens(exp1, exp2), 'Modus Ponens']
@@ -181,6 +180,7 @@ class Brain:
         print("to aqui")
         return [[0, None], 'erro']
     
+    # Find possible conjunctions that solve the problem
     def _find_conjuctions(self, obj):
         if '∧' in obj:
             splited = obj.replace(' ', '').replace('(', '').replace(')', '').split('∧')
@@ -191,6 +191,7 @@ class Brain:
             return True
         return False
     
+    # Find possible additions that solve the problem
     def _find_additions(self, obj):
         qnt = 0
         if '∨' in obj:

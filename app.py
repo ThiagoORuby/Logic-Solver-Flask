@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, request, jsonify, flash
-from brain2 import Brain
+from brain import Brain
 from truth_table import create_table
 import pandas as pd
 from random import randint
