@@ -1,6 +1,6 @@
 ## Flask WebApp to solve logic problems
 
-[Logic Solver](http://logic-solver.herokuapp.com/) is a web app that can solve logic problems with different 
+[Logic Solver](https://logic-solver-com.onrender.com/) is a web app that can solve logic problems with different 
 methods
 
 # Solving problems easily
