@@ -107,6 +107,9 @@ class Brain:
             self.exp_dict = None
             self.achou = True
             return True
+
+        # Applying simplifications
+        self._apply_simplify(obj)
         
         scores = self.get_scores(exp, obj)
         if(scores == True): return True
@@ -135,7 +138,7 @@ class Brain:
                         if finded:
                             print("Complementar encontrado!")
                             ret[0] = conjuction(ret[1], min(exp, txt, key=len))[0]
-                            name = "Conjunção"
+                            name = "Conjunction"
                         else:
                             ret[0] = 0
                 if ret[0] == 0:
@@ -190,6 +193,19 @@ class Brain:
             self.print_list.append([obj, 'Conjunction'])
             return True
         return False
+
+    def _apply_simplify(self, obj):
+        splited = obj.replace(' ', '').replace('(', '').replace(')', '').split('∧')
+        dic = self.exp_dict.copy()
+        for i in splited:
+            for exp in dic.keys():
+                if '→¬∨' in exp: continue
+                aux = exp.replace(' ', '').replace('(', '').replace(')', '').split('∧')
+                if i in aux and i not in self.exp_dict.keys():
+                    self.cache_list.append(i)
+                    self.exp_dict[i] = 0
+                    self.print_list.append([exp, "Premise " + str(list(dic.keys()).index(exp)+1)])
+                    self.print_list.append([i, 'Simplification'])
     
     # Find possible additions that solve the problem
     def _find_additions(self, obj):
